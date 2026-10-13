@@ -1,0 +1,12 @@
+{
+  "name": "studymate-study-dashboard",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A student study dashboard with saved notes, practice quizzes, a study planner, focus timer, and optional AI study helper.",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
