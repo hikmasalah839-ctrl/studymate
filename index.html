@@ -322,5 +322,47 @@
 
   <footer class="site-footer"><a class="brand footer-brand" href="#home"><span class="brand-icon">📚</span><span>Study<span class="brand-accent">Mate</span></span></a><p>Learn smarter. Grow better. Keep going. 💜</p><p class="footer-small">Your information stays in this browser unless you connect your own backend.</p></footer>
   <div id="toast" class="toast" role="status" aria-live="polite"></div>
+  
+<section id="community-notes" style="max-width:900px;margin:30px auto;padding:20px;font-family:Arial,sans-serif;">
+  <h2>📚 StudyMate Community Notes</h2>
+  <p>Share what you learn and help other students!</p>
+
+  <form id="community-note-form">
+    <label for="note-title">Note title</label>
+    <input id="note-title" required maxlength="120"
+      placeholder="e.g. Biology — The Cell"
+      style="display:block;width:100%;padding:10px;margin:8px 0 16px;box-sizing:border-box;">
+
+    <label for="note-subject">Subject</label>
+    <select id="note-subject" required
+      style="display:block;width:100%;padding:10px;margin:8px 0 16px;">
+      <option value="">Choose a subject</option>
+      <option>Biology</option>
+      <option>Mathematics</option>
+      <option>Physics</option>
+      <option>Chemistry</option>
+      <option>English</option>
+      <option>History</option>
+      <option>Geography</option>
+      <option>Computer Science</option>
+      <option>Other</option>
+    </select>
+
+    <label for="note-content">Write your notes</label>
+    <textarea id="note-content" required maxlength="20000"
+      placeholder="Write your study notes here..."
+      style="display:block;width:100%;min-height:160px;padding:10px;margin:8px 0 16px;box-sizing:border-box;"></textarea>
+
+    <button type="submit">Publish Note</button>
+    <p id="community-note-message" role="status"></p>
+  </form>
+
+  <hr>
+  <h3>Shared by Students</h3>
+  <div id="community-note-list">
+    Notes will appear here when we connect Firestore.
+  </div>
+</section>
+
 </body>
 </html>
