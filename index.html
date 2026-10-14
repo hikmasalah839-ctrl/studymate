@@ -8,15 +8,179 @@
   <title>StudyMate | Your Student Companion</title>
   <link rel="stylesheet" href="style.css">
   <script src="scripts.js" defer></script>
-  // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-const firebaseConfig = {
-  apiKey: "AIzaSyCP8pBzo7qDff1RzpMSAwMz4-rDx9ghmmI",
-  authDomain: "studymate-caa73.firebaseapp.com",
-  projectId: "studymate-caa73",
-  storageBucket: "studymate-caa73.firebasestorage.app",
-  messagingSenderId: "462341988201",
-  appId: "1:462341988201:web:7d9ad561f80222305267f8",
-  measurementId: "G-2GTBLPVLEG"
+ 
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+  import {
+    getAuth,
+    createUserWithEmailAndPassword,
+    signInWithEmailAndPassword,
+    sendPasswordResetEmail,
+    signOut,
+    onAuthStateChanged
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyCP8pBzo7qDff1RzpMSAwMz4-rDx9ghmmI",
+    authDomain: "studymate-caa73.firebaseapp.com",
+    projectId: "studymate-caa73",
+    storageBucket: "studymate-caa73.firebasestorage.app",
+    messagingSenderId: "462341988201",
+    appId: "1:462341988201:web:7d9ad561f80222305267f8",
+    measurementId: "G-2GTBLPVLEG"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const auth = getAuth(app);
+
+  // Create the registration and login interface.
+  const panel = document.createElement("section");
+  panel.style.cssText =
+    "max-width:420px;margin:30px auto;padding:24px;" +
+    "border:1px solid #ddd;border-radius:16px;" +
+    "font-family:Arial,sans-serif;box-sizing:border-box;";
+
+  panel.innerHTML = `
+    <h2 id="authTitle">Join StudyMate 📚</h2>
+    <p id="authMessage">Create an account to start your study journey.</p>
+
+    <form id="authForm">
+      <label for="authEmail">Email address</label>
+      <input id="authEmail" type="email" required autocomplete="email"
+        placeholder="you@example.com"
+        style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;">
+
+      <label for="authPassword">Password</label>
+      <input id="authPassword" type="password" required minlength="6"
+        autocomplete="new-password" placeholder="At least 6 characters"
+        style="display:block;width:100%;box-sizing:border-box;padding:12px;margin:8px 0 16px;">
+
+      <button id="authSubmit" type="submit"
+        style="width:100%;padding:12px;background:#7048e8;color:white;border:0;border-radius:8px;cursor:pointer;">
+        Create account
+      </button>
+    </form>
+
+    <p>
+      <button id="authToggle" type="button">Already registered? Log in</button>
+    </p>
+    <button id="resetPassword" type="button">Forgot password?</button>
+    <button id="logoutButton" type="button" hidden>Log out</button>
+    <p id="authStatus" role="status" aria-live="polite"></p>
+  `;
+
+  document.body.prepend(panel);
+
+  const form = document.getElementById("authForm");
+  const emailInput = document.getElementById("authEmail");
+  const passwordInput = document.getElementById("authPassword");
+  const title = document.getElementById("authTitle");
+  const message = document.getElementById("authMessage");
+  const submit = document.getElementById("authSubmit");
+  const toggle = document.getElementById("authToggle");
+  const reset = document.getElementById("resetPassword");
+  const logout = document.getElementById("logoutButton");
+  const status = document.getElementById("authStatus");
+
+  let isRegistering = true;
+
+  toggle.addEventListener("click", () => {
+    isRegistering = !isRegistering;
+    title.textContent = isRegistering ? "Join StudyMate 📚" : "Welcome back!";
+    message.textContent = isRegistering
+      ? "Create an account to start your study journey."
+      : "Log in to your StudyMate account.";
+    submit.textContent = isRegistering ? "Create account" : "Log in";
+    passwordInput.autocomplete = isRegistering
+      ? "new-password"
+      : "current-password";
+    toggle.textContent = isRegistering
+      ? "Already registered? Log in"
+      : "New to StudyMate? Create account";
+    status.textContent = "";
+  });
+
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    status.textContent = "Please wait...";
+    submit.disabled = true;
+
+    try {
+      if (isRegistering) {
+        await createUserWithEmailAndPassword(
+          auth,
+          emailInput.value.trim(),
+          passwordInput.value
+        );
+        status.textContent = "Account created successfully!";
+      } else {
+        await signInWithEmailAndPassword(
+          auth,
+          emailInput.value.trim(),
+          passwordInput.value
+        );
+        status.textContent = "You are logged in!";
+      }
+    } catch (error) {
+      const messages = {
+        "auth/email-already-in-use": "This email already has an account. Please log in.",
+        "auth/invalid-email": "Please enter a valid email address.",
+        "auth/weak-password": "Please choose a stronger password.",
+        "auth/invalid-credential": "Email or password is incorrect.",
+        "auth/too-many-requests": "Too many attempts. Please try again later.",
+        "auth/network-request-failed": "Check your internet connection."
+      };
+      status.textContent =
+        messages[error.code] || "Could not complete the request. Please try again.";
+    } finally {
+      submit.disabled = false;
+    }
+  });
+
+  reset.addEventListener("click", async () => {
+    const email = emailInput.value.trim();
+
+    if (!email) {
+      status.textContent = "Enter your email address first.";
+      emailInput.focus();
+      return;
+    }
+
+    try {
+      await sendPasswordResetEmail(auth, email);
+      status.textContent = "If the account is eligible, a reset email will be sent.";
+    } catch (error) {
+      status.textContent = "Could not send the reset email. Please check the address and try again.";
+    }
+  });
+
+  logout.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      status.textContent = "You have logged out.";
+    } catch {
+      status.textContent = "Could not log out. Please try again.";
+    }
+  });
+
+  onAuthStateChanged(auth, (user) => {
+    if (user) {
+      title.textContent = "Welcome to StudyMate! 🎉";
+      message.textContent = "Signed in as " + user.email;
+      form.hidden = true;
+      toggle.hidden = true;
+      reset.hidden = true;
+      logout.hidden = false;
+    } else {
+      form.hidden = false;
+      toggle.hidden = false;
+      reset.hidden = false;
+      logout.hidden = true;
+    }
+  });
+</script>
+
+  
 };
 </head>
 <body>
