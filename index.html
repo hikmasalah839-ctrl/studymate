@@ -8,6 +8,7 @@
   <title>StudyMate | Your Student Companion</title> 
   <link rel="stylesheet" href="style.css">
   <script src="scripts.js" defer></script> 
+
  
 <script type="module">
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
@@ -187,7 +188,13 @@
 </head>
 <body>
   <header class="site-header">
-    <a class="brand" href="#home" aria-label="StudyMate home"><span class="brand-icon">📚</span><span>Study<span class="brand-accent">Mate</span></span></a>
+   
+<a class="brand" href="#home" aria-label="StudyMate home">
+  <img src="studymate-logo.png" alt="StudyMate logo"
+       style="width: 55px; height: 55px; object-fit: contain;">
+  <span>Study<span class="brand-accent">Mate</span></span>
+</a>
+
     <button class="menu-toggle" id="menuToggle" aria-label="Open navigation" aria-expanded="false">☰</button>
     <nav id="mainNav" aria-label="Main navigation">
       <a href="#home">Home</a>
