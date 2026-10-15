@@ -1,0 +1,128 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>StudyMate Dashboard</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #fff8f0;
+      color: #333;
+    }
+
+    header {
+      background: #f28c28;
+      color: white;
+      padding: 22px;
+      text-align: center;
+    }
+
+    main {
+      max-width: 900px;
+      margin: 30px auto;
+      padding: 20px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      background: white;
+      padding: 22px;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px #00000012;
+    }
+
+    button {
+      padding: 10px 16px;
+      border: 0;
+      border-radius: 8px;
+      background: #f28c28;
+      color: white;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <h1>📚 StudyMate</h1>
+    <p>Your learning journey starts here!</p>
+  </header>
+
+  <main>
+    <h2 id="welcome">Welcome to your dashboard!</h2>
+    <p>Choose what you want to study today.</p>
+
+    <div class="cards">
+      <div class="card">
+        <h3>📝 My Notes</h3>
+        <p>Write and organize your study notes.</p>
+      </div>
+      <div class="card">
+        <h3>❓ Quizzes</h3>
+        <p>Practice what you have learned.</p>
+      </div>
+      <div class="card">
+        <h3>📅 Study Planner</h3>
+        <p>Plan your learning sessions.</p>
+      </div>
+      <div class="card">
+        <h3>⏱️ Study Timer</h3>
+        <p>Focus on one task at a time.</p>
+      </div>
+      <div class="card">
+        <h3>🤖 AI Study Assistant</h3>
+        <p>Get help understanding your lessons.</p>
+      </div>
+      <div class="card">
+        <h3>🌍 Community Notes</h3>
+        <p>Learn from notes shared by students.</p>
+      </div>
+    </div>
+
+    <p style="margin-top:25px;">
+      <button id="logout-button">Log Out</button>
+    </p>
+  </main>
+
+  <script type="module">
+    import { initializeApp } from
+      "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
+
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+    // Replace this with the SAME firebaseConfig
+    // object already used in your index.html.
+    const firebaseConfig = {
+      // Paste your existing Firebase configuration here.
+    };
+
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+
+    onAuthStateChanged(auth, (user) => {
+      if (user) {
+        document.getElementById("welcome").textContent =
+          "Welcome, " + (user.displayName || user.email) + "!";
+      } else {
+        window.location.replace("index.html");
+      }
+    });
+
+    document.getElementById("logout-button").addEventListener("click", async () => {
+      await signOut(auth);
+      window.location.replace("index.html");
+    });
+  </script>
+</body>
+</html>
