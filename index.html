@@ -113,6 +113,7 @@
           passwordInput.value
         );
         status.textContent = "Account created successfully!";
+        window.location.href = "dashboard.html";
       } else {
         await signInWithEmailAndPassword(
           auth,
@@ -120,6 +121,7 @@
           passwordInput.value
         );
         status.textContent = "You are logged in!";
+        window.location.href = "dashboard.html";
       }
     } catch (error) {
       const messages = {
@@ -366,3 +368,4 @@
 
 </body>
 </html>
+ 
