@@ -199,6 +199,48 @@
   <footer>
     Made for learners, with 💜 by StudyMate.
   </footer>
+  
+<script type="module">
+  import { auth } from "./firebase.js";
+  import {
+    onAuthStateChanged,
+    signOut
+  } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+  onAuthStateChanged(auth, (user) => {
+    if (!user) {
+      window.location.replace("index.html");
+      return;
+    }
+
+    const welcome = document.querySelector(".welcome h1");
+
+    if (welcome) {
+      welcome.textContent = "Welcome to StudyMate! 👋";
+    }
+
+    const email = document.createElement("p");
+    email.textContent = "Signed in as: " + user.email;
+    document.querySelector(".welcome").appendChild(email);
+  });
+
+  const logoutButton = document.createElement("button");
+  logoutButton.textContent = "Sign Out";
+  logoutButton.style.cssText =
+    "padding:10px 14px;border:0;border-radius:8px;" +
+    "background:#6254d9;color:white;cursor:pointer;";
+
+  logoutButton.addEventListener("click", async () => {
+    try {
+      await signOut(auth);
+      window.location.replace("index.html");
+    } catch (error) {
+      alert("Unable to sign out. Please try again.");
+    }
+  });
+
+  document.querySelector("header").appendChild(logoutButton);
+</script>
 </body>
 </html>
 
