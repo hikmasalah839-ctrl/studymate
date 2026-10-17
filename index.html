@@ -11,6 +11,7 @@
 
  
 <script type="module">
+  import { auth } from "./firebase.js";
   import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
   import {
     getAuth,
@@ -30,9 +31,6 @@
     appId: "1:462341988201:web:7d9ad561f80222305267f8",
     measurementId: "G-2GTBLPVLEG"
   };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
 
   // Create the registration and login interface.
   const panel = document.createElement("section");
