@@ -11,15 +11,17 @@
 
  
 <script type="module">
-  import { auth } from "./firebase.js";
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    sendPasswordResetEmail,
-    signOut,
-    onAuthStateChanged
+ 
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  sendPasswordResetEmail,
+  signOut,
+  onAuthStateChanged
+} from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
+
+import { auth } from "./firebase.js";
+
   } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
   const firebaseConfig = {
