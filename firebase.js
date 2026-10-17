@@ -3,7 +3,7 @@ import { initializeApp } from "https://www.gstatic.com/firebasejs/12.4.0/firebas
 import { getAuth } from "https://www.gstatic.com/firebasejs/12.4.0/firebase-auth.js";
 
 const firebaseConfig = {
-  apiKey: "YOUR_EXISTING_API_KEY",
+  apiKey: "AIzaSyCP8pBzo7qDff1RzpMSAwMz4-rDx9ghmmI",
   authDomain: "studymate-caa73.firebaseapp.com",
   projectId: "studymate-caa73",
   storageBucket: "studymate-caa73.firebasestorage.app",
